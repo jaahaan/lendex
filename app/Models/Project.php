@@ -9,15 +9,9 @@ class Project extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'user_id',
         'image',
         'title',
         'subtitle',
-        'howToComplete',
-        'ideaGenerate',
-        'reasearchSketching',
-        'launcedProject',
-        'ResultSummery',
         'description',
         'projectName',
         'clients',

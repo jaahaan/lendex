@@ -64,7 +64,6 @@ export default {
             loading: false,
             sending: false,
             formValue: {
-                user_id: "",
                 title: "",
                 icon: "",
             },
@@ -97,7 +96,7 @@ export default {
             this.loading = true;
             const res = await this.callApi(
                 "post",
-                "/app/add_service",
+                "/app/add_service_title",
                 this.formValue
             );
             if (res.status === 200 || res.status == 201) {

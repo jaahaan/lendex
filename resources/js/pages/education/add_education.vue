@@ -102,6 +102,7 @@ export default {
             loading: false,
             sending: false,
             formValue: {
+                type: "education",
                 institute: "",
                 degree: "",
                 fieldOfStudy: "",
@@ -121,7 +122,6 @@ export default {
             let validation = true;
 
             this.clearErrorMessages();
-
             if (this.formValue.institute.trim() == "") {
                 this.errorMessages.institute = "Institute is required!";
                 validation = false;
@@ -140,10 +140,10 @@ export default {
             this.loading = true;
             const res = await this.callApi(
                 "post",
-                "/app/add_education",
+                "/app/add_aboutme",
                 this.formValue
             );
-            if (res.status === 201) {
+            if (res.status === 200 || res.status == 201) {
                 this.loading = false;
                 this.ss("Added successfully!");
                 this.$router.push("/education");

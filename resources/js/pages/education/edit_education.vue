@@ -142,7 +142,7 @@ export default {
             this.loading = true;
             const res = await this.callApi(
                 "put",
-                "/app/update_education",
+                "/app/update_aboutme",
                 this.formValue
             );
             if (res.status === 200 || res.status == 201) {
@@ -169,7 +169,7 @@ export default {
             this.loading = true;
             const response = await this.callApi(
                 "get",
-                `/app/get_education/${this.$route.params.id}`
+                `/app/get_aboutme/${this.$route.params.id}`
             );
             if (response.status == 200) {
                 this.formValue = response.data;

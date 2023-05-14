@@ -18,11 +18,9 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\SpecialSkillsController;
 use App\Http\Controllers\ProjectController;
-use App\Http\Controllers\EducationController;
-use App\Http\Controllers\ExperienceController;
-use App\Http\Controllers\CountController;
-use App\Http\Controllers\SatisfiedClientController;
-use App\Http\Controllers\ServicePlaningController;
+use App\Http\Controllers\AboutMeController;
+use App\Http\Controllers\StatisticsCountController;
+use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\BlogController;
 use App\Http\Controllers\ContactMeController;
 use App\Http\Controllers\TrustedCompanyController;
@@ -39,33 +37,27 @@ Route::middleware([CheckCustomAuth::class])->group(function () {
     Route::post('/app/delete_image', [HomeController::class, 'deleteImage']);
     Route::post('/app/upload', [HomeController::class, 'upload']);
 
-    //Education 
-    Route::get('/app/get_education',[EducationController::class,'getEducation']);
-    Route::post('/app/add_education',[EducationController::class,'addEducation']);
-    Route::put('/app/update_education',[EducationController::class,'updateEducation']);
-    Route::delete('/app/delete_education',[EducationController::class,'deleteEducation']);
-    Route::get('/app/get_education/{id}',[EducationController::class,'getEducationDetail']);
+    //AboutMe 
+    Route::get('/app/get_education',[AboutMeController::class,'getEducation']);
+    Route::get('/app/get_experience',[AboutMeController::class,'getExperience']);
+    Route::post('/app/add_aboutme',[AboutMeController::class,'addAboutMe']);
+    Route::put('/app/update_aboutme',[AboutMeController::class,'updateAboutMe']);
+    Route::delete('/app/delete_aboutme',[AboutMeController::class,'deleteAboutMe']);
+    Route::get('/app/get_aboutme/{id}',[AboutMeController::class,'getAboutMeDetail']);
 
-    //Experience 
-    Route::get('/app/get_experience',[ExperienceController::class,'getExperience']);
-    Route::post('/app/add_experience',[ExperienceController::class,'addExperience']);
-    Route::put('/app/update_experience',[ExperienceController::class,'updateExperience']);
-    Route::delete('/app/delete_experience',[ExperienceController::class,'deleteExperience']);
-    Route::get('/app/get_experience/{id}',[ExperienceController::class,'getExperienceDetail']);
+    //Testimonial 
+    Route::get('/app/get_testimonial',[TestimonialController::class,'getTestimonial']);
+    Route::post('/app/add_testimonial',[TestimonialController::class,'addTestimonial']);
+    Route::put('/app/update_testimonial',[TestimonialController::class,'updateTestimonial']);
+    Route::delete('/app/delete_testimonial',[TestimonialController::class,'deleteTestimonial']);
+    Route::get('/app/get_testimonial/{id}',[TestimonialController::class,'getTestimonialDetail']);
 
-    //Experience 
-    Route::get('/app/get_satisfied_clients',[SatisfiedClientController::class,'getSatisfiedClient']);
-    Route::post('/app/add_satisfied_clients',[SatisfiedClientController::class,'addSatisfiedClient']);
-    Route::put('/app/update_satisfied_clients',[SatisfiedClientController::class,'updateSatisfiedClient']);
-    Route::delete('/app/delete_satisfied_clients',[SatisfiedClientController::class,'deleteSatisfiedClient']);
-    Route::get('/app/get_satisfied_clients/{id}',[SatisfiedClientController::class,'getSatisfiedClientDetail']);
-
-    //Count 
-    Route::get('/app/get_count',[CountController::class,'getCount']);
-    Route::post('/app/add_count',[CountController::class,'addCount']);
-    Route::put('/app/update_count',[CountController::class,'updateCount']);
-    Route::delete('/app/delete_count',[CountController::class,'deleteCount']);
-    Route::get('/app/get_count/{id}',[CountController::class,'getCountDetail']);
+    //StatisticsCount 
+    Route::get('/app/get_StatisticsCount',[StatisticsCountController::class,'getStatisticsCount']);
+    Route::post('/app/add_StatisticsCount',[StatisticsCountController::class,'addStatisticsCount']);
+    Route::put('/app/update_StatisticsCount',[StatisticsCountController::class,'updateStatisticsCount']);
+    Route::delete('/app/delete_StatisticsCount',[StatisticsCountController::class,'deleteStatisticsCount']);
+    Route::get('/app/get_StatisticsCount/{id}',[StatisticsCountController::class,'getStatisticsCountDetail']);
 
     //Project
     Route::get('/app/get_project',[ProjectController::class,'getProject']);
@@ -83,28 +75,20 @@ Route::middleware([CheckCustomAuth::class])->group(function () {
     Route::put('/app/resetSkillPosition', [SpecialSkillsController::class, 'resetSkillPosition']);
 
     //Service 
-    Route::get('/app/get_service',[ServiceController::class,'getService']);
-    Route::post('/app/add_service',[ServiceController::class,'addService']);
-    Route::put('/app/update_service',[ServiceController::class,'updateService']);
-    Route::delete('/app/delete_service',[ServiceController::class,'deleteService']);
-    Route::get('/app/get_service/{id}',[ServiceController::class,'getServiceDetail']);
-    Route::get('/app/parentService/{id}',[ServiceController::class,'getParentService']);
-    Route::put('/app/resetServicePosition',[ServiceController::class,'resetServicePosition']);
-    Route::get('/app/getServiceTitle',[ServiceController::class,'getServiceD']);
+    Route::get('/app/get_service_title',[ServiceController::class,'getServiceTitle']);
+    Route::post('/app/add_service_title',[ServiceController::class,'addServiceTitle']);
+    Route::put('/app/update_service_title',[ServiceController::class,'updateServiceTitle']);
+    Route::delete('/app/delete_service_title',[ServiceController::class,'deleteServiceTitle']);
+    Route::get('/app/get_service_title/{id}',[ServiceController::class,'getServiceTitleDetail']);
+    Route::put('/app/resetServiceTitlePosition', [ServiceController::class, 'resetServiceTitlePosition']);
 
-    //ServicePlaning
-    Route::get('/app/get_service_planning',[ServicePlaningController::class,'getServicePlaning']);
-    Route::post('/app/add_service_planning',[ServicePlaningController::class,'addServicePlaning']);
-    Route::put('/app/update_service_planning',[ServicePlaningController::class,'updateServicePlaning']);
-    Route::delete('/app/delete_service_planning',[ServicePlaningController::class,'deleteServicePlaning']);
-    Route::get('/app/get_service_planning/{id}',[ServicePlaningController::class,'getServicePlaningDetail']);
-
-    //Blog
-    Route::get('/app/get_blog',[BlogController::class,'getBlog']);
-    Route::post('/app/add_blog',[BlogController::class,'addBlog']);
-    Route::put('/app/update_blog',[BlogController::class,'updateBlog']);
-    Route::delete('/app/delete_blog',[BlogController::class,'deleteBlog']);
-    Route::get('/app/get_blog/{id}',[BlogController::class,'getBlogDetail']);
+     //Service 
+     Route::get('/app/get_service_point',[ServiceController::class,'getServicePoint']);
+     Route::post('/app/add_service_point',[ServiceController::class,'addServicePoint']);
+     Route::put('/app/update_service_point',[ServiceController::class,'updateServicePoint']);
+     Route::delete('/app/delete_service_point',[ServiceController::class,'deleteServicePoint']);
+     Route::get('/app/get_service_point/{id}',[ServiceController::class,'getServicePointDetail']);
+     Route::put('/app/resetServicePointPosition', [ServiceController::class, 'resetServicePointPosition']);
 
     //TrustedCompany
     Route::get('/app/get_trusted_company',[TrustedCompanyController::class,'getTrustedCompany']);

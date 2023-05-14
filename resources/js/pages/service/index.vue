@@ -3,7 +3,7 @@
         <div>
             <Breadcrumb>
                 <BreadcrumbItem to="/">Dashboard</BreadcrumbItem>
-                <BreadcrumbItem>Service</BreadcrumbItem>
+                <BreadcrumbItem>Service Title</BreadcrumbItem>
             </Breadcrumb>
         </div>
         <div class="common-page-card">
@@ -14,7 +14,7 @@
                             <Input
                                 type="text"
                                 v-model="search"
-                                placeholder="Search Service..."
+                                placeholder="Search..."
                                 @on-keyup="getSearchCustomer"
                                 ><Icon type="ios-search" slot="prepend"></Icon
                             ></Input>
@@ -27,40 +27,17 @@
                                 >Add Title</Button
                             >
                         </FormItem>
-                        <FormItem>
-                            <Button
-                                type="primary"
-                                @click="$router.push('/add_service_point')"
-                                >Add Point</Button
-                            >
-                        </FormItem>
                     </Form>
                 </Col>
                 <Col :xs="24" :sm="24" :md="24" :lg="24" class="body">
-                    <Button
-                        type="warning"
-                        v-if="childRouteId > 0"
-                        size="small"
-                        @click="returnBack"
-                        ghost
-                    >
-                        << back</Button
-                    >
-                    <div v-if="parentName != ''" class="text-center">
-                        <h2 class="text-center">
-                            <b>Title: </b>{{ parentName }}
-                        </h2>
-                    </div>
                     <ul>
                         <li class="li tr">
                             <p>No.</p>
                             <p>Icon</p>
                             <p>Title</p>
-                            <p>Details</p>
                             <p>Action</p>
                         </li>
                         <draggable
-                            v-if="type == 'submenu'"
                             :list="data1"
                             @change="log"
                             :disabled="!enabled"
@@ -75,26 +52,9 @@
                             >
                                 <p>{{ index + 1 }}</p>
                                 <p>
-                                    <i v-if="data.icon" :class="data.icon"></i>
+                                    <i :class="data.icon"></i>
                                 </p>
                                 <p>{{ data.title }}</p>
-                                <p>
-                                    <Button
-                                        type="warning"
-                                        size="small"
-                                        ghost
-                                        @click="showDetails(index)"
-                                        >Details</Button
-                                    >
-                                    <Button
-                                        type="warning"
-                                        v-if="!data.parent_id"
-                                        size="small"
-                                        ghost
-                                        @click="showRoute(index)"
-                                        >Points</Button
-                                    >
-                                </p>
                                 <!-- <p></p> -->
                                 <p>
                                     <Button
@@ -289,69 +249,21 @@ export default {
             });
             this.resetRoutePosition();
         },
-        showRoute(index) {
-            this.parentName = this.data1[index].title;
-            this.childRouteId = this.data1[index].id;
-            this.getService();
-        },
+
         async resetRoutePosition() {
             // return;
             this.data1 = [];
             const response = await this.callApi(
                 "put",
-                "/app/resetServicePosition",
+                "/app/resetServiceTitlePosition",
                 this.newData
             );
             if (response.status == 200) {
-                this.s("Routers Updated Successfully");
+                this.s("Updated Successfully");
                 this.getService();
             } else this.swr();
         },
-        async returnBack() {
-            this.data1 = [];
-            this.parentName = "";
-            this.loading = true;
-            const response = await this.callApi(
-                "get",
-                `/app/parentService/${this.childRouteId}`
-            );
-            if (response.status == 200) {
-                this.data1 = response.data.data;
-                response.data.parent_id
-                    ? (this.childRouteId = response.data.parent_id)
-                    : (this.childRouteId = 0);
-                this.newList();
-            } else this.swr();
-            this.loading = false;
-        },
 
-        showDetails(index) {
-            this.detailsItem.data = [];
-            this.detailsItem.title = this.data1[index].type;
-            let ob = {
-                name: "id",
-                value: this.data1[index].id,
-            };
-
-            ob = {
-                name: "Icon",
-                value: this.data1[index].icon,
-            };
-            this.detailsItem.data.push(ob);
-            ob = {
-                name: "Title",
-                value: this.data1[index].title,
-            };
-            this.detailsItem.data.push(ob);
-
-            ob = {
-                name: "Parent ID",
-                value: this.data1[index].parent_id,
-            };
-            this.detailsItem.data.push(ob);
-
-            this.detailsModal = true;
-        },
         clearFilters() {
             this.filter = {
                 name: "",
@@ -366,7 +278,7 @@ export default {
             this.getService();
         },
         showEdit(index) {
-            this.$router.push(`/edit_service/${this.data1[index].id}`);
+            this.$router.push(`/edit_service_title/${this.data1[index].id}`);
         },
         showRemove(index) {
             this.UpdateValue.name = this.data1[index].title;
@@ -383,7 +295,7 @@ export default {
             };
             const response = await this.callApi(
                 "delete",
-                `/app/delete_service`,
+                `/app/delete_service_title`,
                 ob
             );
             if (response.status == 200) {
@@ -392,7 +304,6 @@ export default {
                 this.deleteModal = false;
                 this.UpdateValue.password = "";
                 this.getService();
-                // location.reload();
             } else {
                 this.e("Oops!", "Something went wrong, please try again!");
             }
@@ -402,7 +313,7 @@ export default {
             this.loading = true;
             const response = await this.callApi(
                 "get",
-                `/app/get_service?id=${this.childRouteId}&search=${this.search}`
+                `/app/get_service_title?search=${this.search}`
             );
             if (response.status == 200) {
                 this.data1 = response.data;

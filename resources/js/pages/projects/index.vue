@@ -353,8 +353,21 @@ export default {
             this.UpdateValue.indexNumber = index;
             this.deleteModal = true;
         },
+        async handleRemove() {
+            let name;
+            name = this.formValue.image;
+            this.formValue.image = "";
+
+            const res = await this.callApi("post", "/app/delete_image", {
+                imageName: name,
+            });
+        },
         async remove() {
             this.sending = true;
+            let name = this.data1[this.UpdateValue.indexNumber].image;
+            const res = await this.callApi("post", "/app/delete_image", {
+                imageName: name,
+            });
             let ob = {
                 id: this.UpdateValue.id,
             };

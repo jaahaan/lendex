@@ -11,7 +11,7 @@ class User extends Authenticatable
 
 
     protected $fillable = [
-        'name', 'email', 'password','userType','username','contact','store_id','employee_id','national_id','passport_no','user_role_id'
+        'name', 'email', 'password','userType','username','contact','user_role_id'
     ];
     public function setPasswordAttribute($password){
         if ( $password !== null ) {
@@ -28,15 +28,7 @@ class User extends Authenticatable
     ];
 
 
-    public function customer(){
-       return $this->belongsTo('App\Models\Customer', 'id', 'userId');
-    }
-    public function wishlist(){
-        return $this->belongsTo('App\Models\Wishlist', 'id','userId');
-    }
-    public function store(){
-       return $this->belongsTo('App\Models\Store', 'store_id');
-    }
+   
     public function role(){
        return $this->belongsTo('App\Models\UserRole', 'user_role_id');
     }

@@ -12,13 +12,14 @@
         <div class="common-page-card">
             <Form>
                 <Row :gutter="24">
-                    <Col span="24">
+                    <Col span="12">
+                        <h4>Image</h4>
                         <div class="demo-upload-list" v-if="formValue.image">
                             <img :src="`${http + formValue.image}`" />
                             <div class="demo-upload-list-cover">
                                 <Icon
                                     type="ios-trash-outline"
-                                    @click.native="handleRemove"
+                                    @click.native="handleRemoveImage"
                                 ></Icon>
                             </div>
                         </div>
@@ -28,7 +29,7 @@
                                 ref="formValueUploads"
                                 type="drag"
                                 :headers="crfObj"
-                                :on-success="handleSuccess"
+                                :on-success="handleSuccessImage"
                                 :format="['jpg', 'jpeg', 'png']"
                                 :max-size="20048"
                                 :on-format-error="handleFormatError"
@@ -43,31 +44,41 @@
                         </div>
                     </Col>
                     <Col span="12">
-                        <FormItem label="Name">
-                            <Input
-                                type="text"
-                                placeholder="Name"
-                                v-model="formValue.name"
-                            ></Input>
-                        </FormItem>
-                    </Col>
-                    <Col span="12">
-                        <FormItem label="Icon">
-                            <Input
-                                type="text"
-                                placeholder="Icon"
-                                v-model="formValue.icon"
-                            ></Input>
-                        </FormItem>
-                    </Col>
-                    <Col span="12">
-                        <FormItem label="Moto">
-                            <Input
-                                type="text"
-                                placeholder="Moto"
-                                v-model="formValue.moto"
-                            ></Input>
-                        </FormItem>
+                        <h4>Hover Image</h4>
+                        <div
+                            class="demo-upload-list"
+                            v-if="formValue.hover_image"
+                        >
+                            <img :src="`${http + formValue.hover_image}`" />
+                            <div class="demo-upload-list-cover">
+                                <Icon
+                                    type="ios-trash-outline"
+                                    @click.native="handleRemovehover_image"
+                                ></Icon>
+                            </div>
+                        </div>
+
+                        <div
+                            class="mt-3 mb-3"
+                            v-else-if="!formValue.hover_image"
+                        >
+                            <Upload
+                                ref="formValueUploads"
+                                type="drag"
+                                :headers="crfObj"
+                                :on-success="handleSuccesshover_image"
+                                :format="['jpg', 'jpeg', 'png']"
+                                :max-size="20048"
+                                :on-format-error="handleFormatError"
+                                :on-exceeded-size="handleMaxSize"
+                                action="/app/upload"
+                            >
+                                <div class="camera-icon">
+                                    <Icon type="ios-camera" size="20"></Icon>
+                                    Upload Image
+                                </div>
+                            </Upload>
+                        </div>
                     </Col>
                     <Col span="24">
                         <Button
@@ -90,18 +101,38 @@ export default {
             sending: false,
             formValue: {
                 image: "",
-                name: "",
-                icon: "",
-                moto: "",
+                hover_image: "",
             },
 
             http: "http://127.0.0.1:8000/attachments/",
         };
     },
     methods: {
-        handleSuccess(res, file) {
+        handleSuccessImage(res, file) {
             res = `${res}`;
             this.formValue.image = res;
+        },
+        handleSuccesshover_image(res, file) {
+            res = `${res}`;
+            this.formValue.hover_image = res;
+        },
+        async handleRemoveImage() {
+            let name;
+            name = this.formValue.image;
+            this.formValue.image = "";
+
+            const res = await this.callApi("post", "/app/delete_image", {
+                imageName: name,
+            });
+        },
+        async handleRemovehover_image() {
+            let name;
+            name = this.formValue.hover_image;
+            this.formValue.hover_image = "";
+
+            const res = await this.callApi("post", "/app/delete_image", {
+                imageName: name,
+            });
         },
         handleError(res, file) {
             this.$Notice.warning({
@@ -128,15 +159,7 @@ export default {
                 desc: "File  " + file.name + " is too large, no more than 2M.",
             });
         },
-        async handleRemove() {
-            let name;
-            name = this.formValue.image;
-            this.formValue.image = "";
 
-            const res = await this.callApi("post", "/app/delete_image", {
-                imageName: name,
-            });
-        },
         async save() {
             this.loading = true;
             const res = await this.callApi(
@@ -144,13 +167,14 @@ export default {
                 "/app/add_trusted_company",
                 this.formValue
             );
+
             if (res.status === 201) {
                 this.loading = false;
                 this.ss("Added successfully!");
                 this.$router.push("/trusted_company");
-            } else if (this.status == 422) {
-                for (let x in response.data) {
-                    this.e(response.data[x]);
+            } else if (res.status === 422) {
+                for (let x in res.data) {
+                    this.e(res.data[x]);
                 }
             } else {
                 this.loading = false;

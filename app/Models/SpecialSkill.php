@@ -9,7 +9,6 @@ class SpecialSkill extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'user_id',
         'title',
         'percentage',
         'order_no',

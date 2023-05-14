@@ -21,26 +21,48 @@
                     </Form>
                 </Col>
                 <Col span="24">
-                    <Table
-                        border
-                        :loading="loading"
-                        :columns="columns1"
-                        :data="data1"
-                    >
-                        <template slot-scope="{ index }" slot="image">
-                            <img :src="`${http + data1.image}`" />
-                        </template>
-                        <template slot="loading">
-                            <h4 class="table-loading">
-                                <i
-                                    class="ivu-load-loop ivu-icon ivu-icon-ios-loading"
-                                ></i
-                                ><span style="margin-left: 10px"
-                                    >Loading Data...</span
-                                >
-                            </h4>
-                        </template>
-                    </Table>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Image</th>
+                                <th scope="col">Hover Image</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr v-for="(data, index) in data1">
+                                <td><img :src="`${http + data.image}`" /></td>
+                                <td>
+                                    <img :src="`${http + data.hover_image}`" />
+                                </td>
+                                <td>
+                                    <Button
+                                        type="warning"
+                                        size="small"
+                                        ghost
+                                        @click="showEdit(index)"
+                                        >Edit</Button
+                                    ><Button
+                                        type="warning"
+                                        size="small"
+                                        ghost
+                                        @click="showRemove(index)"
+                                        >Delete</Button
+                                    >
+                                </td>
+                            </tr>
+                            <template v-if="data1.length == 0">
+                                <h4 class="table-loading">
+                                    <i
+                                        class="ivu-load-loop ivu-icon ivu-icon-ios-loading"
+                                    ></i
+                                    ><span style="margin-left: 10px"
+                                        >Loading Data...</span
+                                    >
+                                </h4>
+                            </template>
+                        </tbody>
+                    </table>
                 </Col>
             </Row>
         </div>
@@ -106,23 +128,12 @@ export default {
             columns1: [
                 {
                     title: "Image",
-                    key: "image",
+                    slot: "image",
                     minWidth: 150,
                 },
                 {
-                    title: "Name",
-                    key: "name",
-                    minWidth: 150,
-                },
-                {
-                    title: "Icon",
-                    key: "icon",
-                    minWidth: 150,
-                },
-
-                {
-                    title: "Moto",
-                    key: "moto",
+                    title: "Hover Image",
+                    slot: "hover_image",
                     minWidth: 150,
                 },
 
@@ -340,8 +351,27 @@ export default {
             this.UpdateValue.indexNumber = index;
             this.deleteModal = true;
         },
+        async handleRemoveImage() {
+            let name;
+            name = this.data1[this.UpdateValue.indexNumber].image;
+
+            const res = await this.callApi("post", "/app/delete_image", {
+                imageName: name,
+            });
+        },
+        async handleRemovehover_image() {
+            let name;
+            name = this.data1[this.UpdateValue.indexNumber].hover_image;
+
+            const res = await this.callApi("post", "/app/delete_image", {
+                imageName: name,
+            });
+        },
         async remove() {
             this.sending = true;
+            this.handleRemoveImage();
+            this.handleRemovehover_image();
+
             let ob = {
                 id: this.UpdateValue.id,
             };
@@ -377,12 +407,4 @@ export default {
     },
 };
 </script>
-<style scoped>
-.account_details_p {
-    width: 100%;
-    display: inline-block;
-    text-align: start;
-    font-size: 16px;
-    font-weight: 600;
-}
-</style>
+<style scoped></style>

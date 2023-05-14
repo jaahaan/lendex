@@ -88,67 +88,19 @@
                             ></Input>
                         </FormItem>
                     </Col>
-                    <Col span="12">
-                        <FormItem label="How To Complete">
-                            <Input
-                                v-model="formValue.howToComplete"
-                                type="textarea"
-                                :autosize="{ minRows: 2, maxRows: 5 }"
-                                placeholder="Write How To Complete..."
-                            ></Input>
-                        </FormItem>
+                    <Col span="24">
+                        <h4 style="margin-bottom: 10px">Description</h4>
                     </Col>
-                    <Col span="12">
-                        <FormItem label="Idea Generate">
-                            <Input
-                                v-model="formValue.ideaGenerate"
-                                type="textarea"
-                                :autosize="{ minRows: 2, maxRows: 5 }"
-                                placeholder="Write Idea Generate..."
-                            ></Input>
-                        </FormItem>
-                    </Col>
-                    <Col span="12">
-                        <FormItem label="Reasearch Sketching">
-                            <Input
-                                v-model="formValue.reasearchSketching"
-                                type="textarea"
-                                :autosize="{ minRows: 2, maxRows: 5 }"
-                                placeholder="Write Reasearch Sketching..."
-                            ></Input>
-                        </FormItem>
-                    </Col>
-
-                    <Col span="12">
-                        <FormItem label="Launced Project">
-                            <Input
-                                v-model="formValue.launcedProject"
-                                type="textarea"
-                                :autosize="{ minRows: 2, maxRows: 5 }"
-                                placeholder="Write Launced Project..."
-                            ></Input>
-                        </FormItem>
-                    </Col>
-
-                    <Col span="12">
-                        <FormItem label="Result Summery">
-                            <Input
-                                v-model="formValue.ResultSummery"
-                                type="textarea"
-                                :autosize="{ minRows: 2, maxRows: 5 }"
-                                placeholder="Write Result Summery..."
-                            ></Input>
-                        </FormItem>
-                    </Col>
-                    <Col span="12">
-                        <FormItem label="Description">
-                            <Input
+                    <Col span="24">
+                        <div class="quil-editor" style="min-height: 150px">
+                            <quill-editor
+                                ref="myQuillEditor"
                                 v-model="formValue.description"
-                                type="textarea"
-                                :autosize="{ minRows: 2, maxRows: 5 }"
-                                placeholder="Write Description..."
-                            ></Input>
-                        </FormItem>
+                                :autosize="{ minRows: 15, maxRows: 20 }"
+                                :options="editorOption"
+                                @change="onEditorChange($event)"
+                            ></quill-editor>
+                        </div>
                     </Col>
 
                     <Col span="12">
@@ -203,11 +155,6 @@ export default {
                 image: "",
                 title: "",
                 subtitle: "",
-                howToComplete: "",
-                ideaGenerate: "",
-                reasearchSketching: "",
-                launcedProject: "",
-                ResultSummery: "",
                 description: "",
                 projectName: "",
                 clients: "",
@@ -220,6 +167,7 @@ export default {
                 subtitle: "",
                 projectName: "",
             },
+            editorOption: {},
             http: "http://127.0.0.1:8000/attachments/",
         };
     },
@@ -261,6 +209,9 @@ export default {
             const res = await this.callApi("post", "/app/delete_image", {
                 imageName: name,
             });
+        },
+        onEditorChange({ quill, html, text }) {
+            this.formValue.description = html;
         },
         async save() {
             let validation = true;

@@ -33,7 +33,7 @@
                             </p>
                         </div>
 
-                        <Navbar />
+                        <!-- <Navbar /> -->
                     </div>
                 </Header>
                 <Content :style="{ minHeight: '220px' }">
@@ -52,12 +52,12 @@
 import { mapGetters } from "vuex";
 
 import Sidebar from "../components/sidebar";
-import Navbar from "../components/navbar";
+// import Navbar from "../components/navbar";
 
 export default {
     components: {
         Sidebar,
-        Navbar,
+        // Navbar,
     },
     data() {
         // const { width, height } = useWindowSize();

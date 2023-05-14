@@ -14,12 +14,11 @@ class ProjectController extends Controller
         $Project =  Project::select();
         if($search){
             $Project->where(function($query) use ($search){
-                $query->where('title',$search)->orwhere('subtitle','LIKE',"%$search%")->orwhere('projectName','LIKE',"%$search%");
+                $query->where('title','LIKE',"%$search%")->orwhere('subtitle','LIKE',"%$search%")->orwhere('projectName','LIKE',"%$search%");
             });
         }
         
         return $Project->orderby('id','desc')->get();
-        return Project::get();
     }
     public function addProject(Request $request){
         $validator = Validator::make($request->all(),[

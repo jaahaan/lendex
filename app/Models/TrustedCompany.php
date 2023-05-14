@@ -10,8 +10,6 @@ class TrustedCompany extends Model
     use HasFactory;
     protected $fillable = [
         'image',
-        'name',
-        'icon',
-        'moto',
+        'hover_image',
     ];
 }

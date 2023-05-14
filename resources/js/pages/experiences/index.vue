@@ -96,12 +96,12 @@ export default {
             columns1: [
                 {
                     title: "Company",
-                    key: "company",
+                    key: "institute",
                     minWidth: 150,
                 },
                 {
                     title: "Designation",
-                    key: "designation",
+                    key: "degree",
                     minWidth: 150,
                 },
 
@@ -197,7 +197,7 @@ export default {
             };
             const response = await this.callApi(
                 "delete",
-                `/app/delete_experience`,
+                `/app/delete_aboutme`,
                 ob
             );
             if (response.status == 200) {

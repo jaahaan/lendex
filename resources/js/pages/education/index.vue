@@ -201,7 +201,7 @@ export default {
             };
             const response = await this.callApi(
                 "delete",
-                `/app/delete_education`,
+                `/app/delete_aboutme`,
                 ob
             );
             if (response.status == 200) {

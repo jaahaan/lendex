@@ -13,12 +13,11 @@ class ContactMeController extends Controller
         $ContactMe =  ContactMe::select();
         if($search){
             $ContactMe->where(function($query) use ($search){
-                $query->where('name',$search)->orwhere('email','LIKE',"%$search%");
+                $query->where('name','LIKE',"%$search%")->orwhere('email','LIKE',"%$search%");
             });
         }
         
         return $ContactMe->orderby('id','desc')->get();
-        return ContactMe::get();
     }
 
     public function addContactMe(Request $request){

@@ -3,7 +3,7 @@
         <div>
             <Breadcrumb>
                 <BreadcrumbItem to="/">Dashboard</BreadcrumbItem>
-                <BreadcrumbItem>Experiences</BreadcrumbItem>
+                <BreadcrumbItem>Contact Me</BreadcrumbItem>
             </Breadcrumb>
         </div>
         <div class="common-page-card">
@@ -15,7 +15,7 @@
                                 type="text"
                                 v-model="search"
                                 placeholder="Search..."
-                                @on-keyup="getExperiences"
+                                @on-keyup="getContactMe"
                             >
                                 <Icon type="ios-search" slot="prepend"></Icon>
                             </Input>
@@ -173,13 +173,13 @@ export default {
             if (response.status == 200) {
                 this.s("Great!", "Removed successfully!");
                 this.deleteModal = false;
-                this.getExperiences();
+                this.getContactMe();
             } else {
                 this.e("Oops!", "Something went wrong, please try again!");
             }
             this.sending = false;
         },
-        async getExperiences() {
+        async getContactMe() {
             this.loading = true;
             const response = await this.callApi(
                 "get",
@@ -193,7 +193,7 @@ export default {
     },
 
     async created() {
-        await this.getExperiences();
+        await this.getContactMe();
     },
 };
 </script>
