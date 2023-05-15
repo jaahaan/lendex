@@ -15,39 +15,7 @@
                         >
                     </Col>
                     <br />
-                    <Col span="24">
-                        <div class="demo-upload-list" v-if="formValue.image">
-                            <img :src="`${http + formValue.image}`" />
-                            <div class="demo-upload-list-cover" v-if="isEdit">
-                                <Icon
-                                    type="ios-trash-outline"
-                                    @click.native="handleImageRemove"
-                                ></Icon>
-                            </div>
-                        </div>
 
-                        <div
-                            class="mt-3 mb-3"
-                            v-else-if="isEdit && !formValue.image"
-                        >
-                            <Upload
-                                ref="formValueUploads"
-                                type="drag"
-                                :headers="crfObj"
-                                :on-success="handleImgSuccess"
-                                :format="['jpg', 'jpeg', 'png']"
-                                :max-size="20048"
-                                :on-format-error="handleFormatError"
-                                :on-exceeded-size="handleMaxSize"
-                                action="/app/upload"
-                            >
-                                <div class="camera-icon">
-                                    <Icon type="ios-camera" size="20"></Icon>
-                                    Upload Image
-                                </div>
-                            </Upload>
-                        </div>
-                    </Col>
                     <Col span="12">
                         <FormItem
                             label="Name"
@@ -190,86 +158,98 @@
                             ></Input>
                         </FormItem>
                     </Col>
+
                     <Col span="24">
-                        <FormItem
-                            label="Resume"
-                            v-if="isEdit && !formValue.resume"
+                        <FormItem label="Resume:">
+                            <div v-if="isEdit && !formValue.resume">
+                                <Upload
+                                    ref="upload"
+                                    :multiple="false"
+                                    :show-upload-list="true"
+                                    :headers="crfObj"
+                                    :on-success="handleSuccess"
+                                    :max-size="60048"
+                                    :format="['pdf', 'docx', 'txt', 'zip']"
+                                    :on-format-error="handleFormatError"
+                                    :on-remove="handleRemove"
+                                    type="drag"
+                                    action="/app/upload"
+                                >
+                                    <div class="profile-main-btn">
+                                        <i
+                                            class="fa-solid fa-cloud-arrow-up"
+                                        ></i>
+                                        Upload Resume
+                                    </div>
+                                </Upload>
+                            </div>
+                            <div class="attachmentName">
+                                <div v-if="!formValue.resume">
+                                    <span v-if="!isEdit">Not Available</span>
+                                </div>
+                                <div v-else>
+                                    <span>{{ formValue.resume }}</span>
+                                    <Icon
+                                        v-if="isEdit"
+                                        type="ios-trash-outline"
+                                        @click.native="handleRemove"
+                                    ></Icon>
+                                </div>
+                            </div>
+                        </FormItem>
+                    </Col>
+                    <Col span="24">
+                        <div class="demo-upload-list" v-if="formValue.image">
+                            <img :src="`${http + formValue.image}`" />
+                            <div class="demo-upload-list-cover">
+                                <Icon
+                                    type="ios-trash-outline"
+                                    @click.native="handleImageRemove"
+                                    v-if="isEdit"
+                                ></Icon>
+                                <Icon
+                                    type="ios-eye-outline"
+                                    @click.native="
+                                        handleView(`${http + formValue.image}`)
+                                    "
+                                ></Icon>
+                            </div>
+                        </div>
+
+                        <div
+                            class="mt-3 mb-3"
+                            v-else-if="isEdit && !formValue.image"
                         >
                             <Upload
-                                ref="upload"
-                                :multiple="false"
-                                :show-upload-list="true"
-                                :headers="crfObj"
-                                :on-success="handleSuccess"
-                                :max-size="60048"
-                                :format="[
-                                    'pdf',
-                                    'docx',
-                                    'txt',
-                                    'mp4',
-                                    'mp3',
-                                    'zip',
-                                ]"
-                                :on-format-error="handleFormatError"
-                                :on-remove="handleRemove"
+                                ref="formValueUploads"
                                 type="drag"
+                                :headers="crfObj"
+                                :on-success="handleImgSuccess"
+                                :format="['jpg', 'jpeg', 'png']"
+                                :max-size="20048"
+                                :on-format-error="handleFormatError"
+                                :on-exceeded-size="handleMaxSize"
                                 action="/app/upload"
+                                class="upload"
                             >
-                                <div class="profile-main-btn">
-                                    <i class="fa-solid fa-cloud-arrow-up"></i>
-                                    Upload Resume
+                                <div class="camera-icon">
+                                    <Icon type="ios-camera" size="20"></Icon>
+                                    Upload Image
                                 </div>
                             </Upload>
-                        </FormItem>
-
-                        <div class="attachmentName">
-                            <span>{{ formValue.resume }}</span>
-                            <Icon
-                                v-if="formValue.resume && isEdit"
-                                type="ios-trash-outline"
-                                @click.native="handleRemove"
-                            ></Icon>
                         </div>
                     </Col>
-                    <!-- <Col span="24">
-                        <FormItem
-                            label="Video"
-                            v-if="isEdit && !formValue.video"
+                    <Col span="24" v-if="isEdit">
+                        <Button
+                            type="primary"
+                            :loading="loading"
+                            @click="save"
+                            style="margin-right: 10px"
                         >
-                            <Upload
-                                ref="upload"
-                                :multiple="false"
-                                :show-upload-list="true"
-                                :headers="crfObj"
-                                :max-size="60048"
-                                :on-success="handleVidSuccess"
-                                :format="['mp4', 'mp3', 'WMV']"
-                                :on-format-error="handleFormatError"
-                                :on-remove="handleVidRemove"
-                                type="drag"
-                                action="/app/upload"
-                            >
-                                <div class="profile-main-btn">
-                                    <i class="fa-solid fa-cloud-arrow-up"></i>
-                                    Upload Video
-                                </div>
-                            </Upload>
-                        </FormItem>
-
-                        <div class="attachmentName">
-                            <span>{{ formValue.video }}</span>
-                            <Icon
-                                v-if="formValue.video && isEdit"
-                                type="ios-trash-outline"
-                                @click.native="handleVidRemove"
-                            ></Icon>
-                        </div>
-                    </Col> -->
-
-                    <Col v-if="isEdit" span="24">
-                        <Button type="primary" @click="isEdit = false"
-                            >Cancel</Button
-                        ><Button type="primary" @click="save">Save</Button>
+                            <span v-if="!loading">Add</span>
+                            <span v-else>Please wait...</span>
+                        </Button>
+                        <Button @click="isEdit = false">Cancel</Button>
                     </Col>
                 </Row>
             </Form>
@@ -335,6 +315,9 @@
                 </Button>
             </div>
         </Modal>
+        <Modal title="View Image" v-model="visible">
+            <img :src="modalImageUrl" v-if="visible" style="width: 100%" />
+        </Modal>
     </div>
 </template>
 
@@ -392,17 +375,28 @@ export default {
                 confirm_password: "",
             },
             http: "http://127.0.0.1:8000/attachments/",
+            modalImageUrl: "",
+            visible: false,
         };
     },
 
     methods: {
+        handleView(item) {
+            this.modalImageUrl = item;
+            this.visible = true;
+        },
         async handleSuccess(res, file) {
             this.formValue.resume = `${res}`;
         },
         async handleRemove(file, fileList) {
+            const response = await this.callApi(
+                "post",
+                "/app/updateInfoRemove?type=resume"
+            );
             const res = await this.callApi("post", "/app/delete_image", {
                 imageName: this.formValue.resume,
             });
+
             if (res.status == 200) {
                 this.formValue.resume = "";
             }
@@ -415,17 +409,7 @@ export default {
             res = `${res}`;
             this.formValue.resume = res;
         },
-        async handleVidSuccess(res, file) {
-            this.formValue.video = `${res}`;
-        },
-        async handleVidRemove(file, fileList) {
-            const res = await this.callApi("post", "/app/delete_image", {
-                imageName: this.formValue.video,
-            });
-            if (res.status == 200) {
-                this.formValue.video = "";
-            }
-        },
+
         handleError(res, file) {
             this.$Notice.warning({
                 title: "The file format is incorrect",
@@ -452,18 +436,17 @@ export default {
             });
         },
         async handleImageRemove() {
+            const response = await this.callApi(
+                "post",
+                "/app/updateInfoRemove?type=image"
+            );
             let name;
             name = this.formValue.image;
             this.formValue.image = "";
 
-            // this.$refs.formValueUploads.clearFiles();
             const res = await this.callApi("post", "/app/delete_image", {
                 imageName: name,
             });
-            // if (res.status != 200) {
-            //     this.formValue.image = image;
-            //     this.swr();
-            // }
         },
         async handleResRemove() {
             let name;
@@ -577,63 +560,14 @@ export default {
     },
 };
 </script>
-<style>
-.demo-upload-list {
-    display: inline-block;
-    width: auto;
-    height: auto;
-    text-align: center;
-    line-height: 60px;
-    border: 1px solid transparent;
-    border-radius: 4px;
-    overflow: hidden;
-    background: #fff;
-    position: relative;
-    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
-    margin-right: 4px;
-}
-.demo-upload-list img {
-    width: 100%;
-    height: 100%;
-}
-.demo-upload-list-cover {
-    display: none;
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background: rgba(0, 0, 0, 0.6);
-}
-.demo-upload-list:hover .demo-upload-list-cover {
-    display: block;
-}
-.demo-upload-list-cover i {
-    color: #fff;
-    font-size: 60px;
-    cursor: pointer;
-    margin: 30px 2px;
-}
-.camera-icon {
-    height: 60px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 
+<style scoped>
 .attachmentName {
-    padding: 5px;
-    margin: 5px;
-    justify-content: space-between;
-    display: flex;
-    align-items: center;
-}
-
-.attachmentName :hover {
-    background-color: #f5f5f5;
-    color: $grayColor;
+    padding-left: 20px;
 }
 .attachmentName i {
+    margin-left: 10px;
     cursor: pointer;
+    font-size: 20px;
 }
 </style>

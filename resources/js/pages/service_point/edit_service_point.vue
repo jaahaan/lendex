@@ -4,9 +4,7 @@
             <div>
                 <Breadcrumb>
                     <BreadcrumbItem to="/">Dashboard</BreadcrumbItem>
-                    <BreadcrumbItem to="/service_point"
-                        >Service Point</BreadcrumbItem
-                    >
+                    <BreadcrumbItem to="/service">Service</BreadcrumbItem>
                     <BreadcrumbItem>Edit Service Point</BreadcrumbItem>
                 </Breadcrumb>
             </div>
@@ -54,7 +52,7 @@
                                 <span v-if="!loading">Update</span>
                                 <span v-else>Please wait...</span>
                             </Button>
-                            <Button @click="$router.push('/service_point')"
+                            <Button @click="$router.push('/service')"
                                 >Cancel</Button
                             >
                         </Col>
@@ -106,7 +104,7 @@ export default {
             if (res.status === 200 || res.status == 201) {
                 this.loading = false;
                 this.ss("Updated successfully!");
-                this.$router.push("/service_point");
+                this.$router.push("/service");
             } else if (this.status == 422) {
                 for (let x in response.data) {
                     this.e(response.data[x]);

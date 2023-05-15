@@ -29,6 +29,8 @@ use App\Http\Controllers\TrustedCompanyController;
 Route::middleware([CheckCustomAuth::class])->group(function () {
     Route::get('/app/getUser',  [HomeController::class, 'getUser']);
     Route::post('/app/updateInfo',  [HomeController::class, 'updateInfo']);
+    Route::post('/app/updateInfoRemove',  [HomeController::class, 'updateInfoRemove']);
+    
 
     //Attachment
     Route::post('/upload_attachment', [HomeController::class, 'uploadAttachment']);

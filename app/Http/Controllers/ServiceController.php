@@ -63,20 +63,16 @@ class ServiceController extends Controller
         }
         return 'updated successful';
     }
-
-
-
     public function getServicePoint(Request $request){
         
         $search = $request->search;
-        $ServicePoint =  ServicePoint::with('title');
-        if($search){
-            $ServicePoint->where(function($query) use ($search){
-                $query->where('point','LIKE',"%$search%");
-            });
-        }
-        
-        return $ServicePoint->orderby('order_no','asc')->get();
+        $Service = ServiceTitle::where('id', $request->id)->select('title')->first();
+        $ServicePoint =  ServicePoint::where('title_id', $request->id)->orderby('order_no','asc')->get();
+
+        return response()->json([
+            'servicePoint' => $ServicePoint,
+            'service' => $Service,
+        ]);
 
     }
     public function addServicePoint(Request $request){

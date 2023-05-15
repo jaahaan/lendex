@@ -31,9 +31,43 @@
                         </thead>
                         <tbody>
                             <tr v-for="(data, index) in data1">
-                                <td><img :src="`${http + data.image}`" /></td>
                                 <td>
-                                    <img :src="`${http + data.hover_image}`" />
+                                    <div class="demo-upload-list">
+                                        <img :src="`${http + data.image}`" />
+                                        <div class="demo-upload-list-cover">
+                                            <Icon
+                                                type="ios-eye-outline"
+                                                @click.native="
+                                                    handleView(
+                                                        `${http + data.image}`
+                                                    )
+                                                "
+                                            ></Icon>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <div
+                                        class="demo-upload-list"
+                                        v-if="data.hover_image"
+                                    >
+                                        <img
+                                            :src="`${http + data.hover_image}`"
+                                        />
+                                        <div class="demo-upload-list-cover">
+                                            <Icon
+                                                type="ios-eye-outline"
+                                                @click.native="
+                                                    handleView(
+                                                        `${
+                                                            http +
+                                                            data.hover_image
+                                                        }`
+                                                    )
+                                                "
+                                            ></Icon>
+                                        </div>
+                                    </div>
                                 </td>
                                 <td>
                                     <Button
@@ -41,17 +75,19 @@
                                         size="small"
                                         ghost
                                         @click="showEdit(index)"
+                                        style="margin-right: 5px"
                                         >Edit</Button
-                                    ><Button
-                                        type="warning"
+                                    >
+                                    <Button
+                                        type="error"
                                         size="small"
                                         ghost
                                         @click="showRemove(index)"
-                                        >Delete</Button
+                                        >Remove</Button
                                     >
                                 </td>
                             </tr>
-                            <template v-if="data1.length == 0">
+                            <template v-if="loading">
                                 <h4 class="table-loading">
                                     <i
                                         class="ivu-load-loop ivu-icon ivu-icon-ios-loading"
@@ -91,19 +127,8 @@
             </div>
         </Modal>
 
-        <Modal
-            v-model="viewModal"
-            :title="detailsItem.title"
-            :footer-hide="true"
-        >
-            <div class="_item_details">
-                <Table
-                    border
-                    :columns="detailsColum"
-                    :data="detailsItem.data"
-                    :show-header="false"
-                ></Table>
-            </div>
+        <Modal title="View Image" v-model="visible">
+            <img :src="modalImageUrl" v-if="visible" style="width: 100%" />
         </Modal>
     </div>
 </template>
@@ -252,6 +277,8 @@ export default {
                 ],
             },
             data1: [],
+            modalImageUrl: "",
+            visible: false,
         };
     },
     computed: {
@@ -263,6 +290,10 @@ export default {
         },
     },
     methods: {
+        handleView(item) {
+            this.modalImageUrl = item;
+            this.visible = true;
+        },
         showEdit(index) {
             this.$router.push(`/edit_trusted_company/${this.data1[index].id}`);
         },
@@ -407,4 +438,8 @@ export default {
     },
 };
 </script>
-<style scoped></style>
+<style scoped>
+td {
+    text-align: center;
+}
+</style>

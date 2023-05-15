@@ -10,36 +10,6 @@
         <div class="common-page-card">
             <Form>
                 <Row :gutter="24">
-                    <Col span="24">
-                        <div class="demo-upload-list" v-if="formValue.image">
-                            <img :src="`${http + formValue.image}`" />
-                            <div class="demo-upload-list-cover">
-                                <Icon
-                                    type="ios-trash-outline"
-                                    @click.native="handleRemove"
-                                ></Icon>
-                            </div>
-                        </div>
-
-                        <div class="mt-3 mb-3" v-else-if="!formValue.image">
-                            <Upload
-                                ref="formValueUploads"
-                                type="drag"
-                                :headers="crfObj"
-                                :on-success="handleSuccess"
-                                :format="['jpg', 'jpeg', 'png']"
-                                :max-size="20048"
-                                :on-format-error="handleFormatError"
-                                :on-exceeded-size="handleMaxSize"
-                                action="/app/upload"
-                            >
-                                <div class="camera-icon">
-                                    <Icon type="ios-camera" size="20"></Icon>
-                                    Upload Image
-                                </div>
-                            </Upload>
-                        </div>
-                    </Col>
                     <Col span="12">
                         <FormItem
                             label="Title"
@@ -104,15 +74,6 @@
                     </Col>
 
                     <Col span="12">
-                        <FormItem label="Budget">
-                            <Input
-                                type="text"
-                                placeholder="Budget"
-                                v-model="formValue.budget"
-                            ></Input>
-                        </FormItem>
-                    </Col>
-                    <Col span="12">
                         <FormItem label="Duration">
                             <Input
                                 type="text"
@@ -132,15 +93,62 @@
                         </FormItem>
                     </Col>
                     <Col span="24">
+                        <div class="demo-upload-list" v-if="formValue.image">
+                            <img :src="`${http + formValue.image}`" />
+                            <div class="demo-upload-list-cover">
+                                <Icon
+                                    type="ios-eye-outline"
+                                    @click.native="
+                                        handleView(`${http + formValue.image}`)
+                                    "
+                                ></Icon>
+                                <Icon
+                                    type="ios-trash-outline"
+                                    @click.native="handleRemove"
+                                ></Icon>
+                            </div>
+                        </div>
+
+                        <div class="mt-3 mb-3" v-else-if="!formValue.image">
+                            <Upload
+                                ref="formValueUploads"
+                                type="drag"
+                                :headers="crfObj"
+                                :on-success="handleSuccess"
+                                :format="['jpg', 'jpeg', 'png']"
+                                :max-size="20048"
+                                :on-format-error="handleFormatError"
+                                :on-exceeded-size="handleMaxSize"
+                                action="/app/upload"
+                                class="upload"
+                            >
+                                <div class="camera-icon">
+                                    <Icon type="ios-camera" size="20"></Icon>
+                                    Upload Image
+                                </div>
+                            </Upload>
+                        </div>
+                    </Col>
+                    <Col span="24">
                         <Button
                             type="primary"
-                            @click="$router.push('/projects')"
+                            :loading="loading"
+                            @click="save"
+                            style="margin-right: 10px"
+                        >
+                            <span v-if="!loading">Update</span>
+                            <span v-else>Please wait...</span>
+                        </Button>
+                        <Button @click="$router.push('/projects')"
                             >Cancel</Button
-                        ><Button type="primary" @click="save">Save</Button>
+                        >
                     </Col>
                 </Row>
             </Form>
         </div>
+        <Modal title="View Image" v-model="visible">
+            <img :src="modalImageUrl" v-if="visible" style="width: 100%" />
+        </Modal>
     </div>
 </template>
 
@@ -158,7 +166,6 @@ export default {
                 description: "",
                 projectName: "",
                 clients: "",
-                budget: "",
                 duration: "",
                 date: "",
             },
@@ -169,9 +176,15 @@ export default {
             },
             editorOption: {},
             http: "http://127.0.0.1:8000/attachments/",
+            modalImageUrl: "",
+            visible: false,
         };
     },
     methods: {
+        handleView(item) {
+            this.modalImageUrl = item;
+            this.visible = true;
+        },
         handleSuccess(res, file) {
             res = `${res}`;
             this.formValue.image = res;

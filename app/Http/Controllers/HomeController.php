@@ -26,38 +26,25 @@ class HomeController extends Controller
             'data' => $user
         ], 200);
     }
-
     
-    // //upload attachment
-    // public function uploadAttachment(Request $request)
-    // {
-    //     // $this->validate($request, [
-    //     //     'file' => 'required|mimes:jpeg,jpg,png,pdf,pptx',
-    //     // ]);
-    //     // $fileName = time() . '.' . $request->file->extension();
-    //     $fileName = time() . '_' . $request->file->getClientOriginalName();
-    //     $request->file->move('attachments', $fileName);
-    //     return $fileName;
-    // }
-
-    // public function deleteAttachment(Request $request)
-    // {
-    //     $fileName = $request->Name;
-    //     \Log::info($fileName);
-    //     $this->deleteFileFromServer($fileName, false);
-    //     return 'done';
-    // }
-    // public function deleteFileFromServer($fileName, $hasFullPath = false)
-    // {
-    //     if (!$hasFullPath) {
-    //         $filePath = public_path('attachments') .'\\'. $fileName;
-    //         \Log::info($filePath);
-    //     }
-    //     if (file_exists($filePath)) {
-    //         @unlink($filePath);
-    //     }
-    //     return;
-    // }
+    public function updateInfoRemove(Request $request){
+        if($request->type == 'resume'){
+            $user = User::where('id',Auth::user()->id)->update([
+                'resume' => null
+            ]);
+        }
+        else if($request->type == 'image'){
+            $user = User::where('id',Auth::user()->id)->update([
+                'image' => null
+            ]);
+        }
+        return response()->json([
+            'success' => true,
+            'data' => $user
+        ], 200);
+    }
+    
+    
     //image upload
     public function upload(Request $request)
     {

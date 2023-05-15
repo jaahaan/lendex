@@ -11,16 +11,6 @@
                 <Col span="24">
                     <Form ref="formInline" inline>
                         <FormItem>
-                            <Input
-                                type="text"
-                                v-model="search"
-                                placeholder="Search..."
-                                @on-keyup="getSearchCustomer"
-                                ><Icon type="ios-search" slot="prepend"></Icon
-                            ></Input>
-                        </FormItem>
-
-                        <FormItem>
                             <Button
                                 type="primary"
                                 @click="$router.push('/add_service_point')"
@@ -30,10 +20,22 @@
                     </Form>
                 </Col>
                 <Col :xs="24" :sm="24" :md="24" :lg="24" class="body">
+                    <Button
+                        type="warning"
+                        size="small"
+                        @click="returnBack"
+                        ghost
+                    >
+                        << back</Button
+                    >
+                    <div class="text-center">
+                        <h2 class="text-center">
+                            <b>Title: </b>{{ parentName }}
+                        </h2>
+                    </div>
                     <ul>
                         <li class="li tr">
                             <p>No.</p>
-                            <p>Title</p>
                             <p>Point</p>
                             <p>Action</p>
                         </li>
@@ -51,7 +53,6 @@
                                 v-for="(data, index) in data1"
                             >
                                 <p>{{ index + 1 }}</p>
-                                <p>{{ data.title.title }}</p>
                                 <p>{{ data.point }}</p>
                                 <p>
                                     <Button
@@ -117,6 +118,7 @@ export default {
     data() {
         return {
             enabled: true,
+            parentName: "",
             search: "",
             page: 1,
             pageOption: [5, 10, 20, 50, 100],
@@ -212,6 +214,7 @@ export default {
         showEdit(index) {
             this.$router.push(`/edit_service_point/${this.data1[index].id}`);
         },
+
         showRemove(index) {
             this.UpdateValue.name = this.data1[index].point;
             // this.UpdateValue.type=this.data1[index].type
@@ -241,18 +244,21 @@ export default {
             }
             this.sending = false;
         },
+        async returnBack() {
+            this.$router.push(`/service`);
+        },
         async getService() {
             this.loading = true;
             const response = await this.callApi(
                 "get",
-                `/app/get_service_point?search=${this.search}`
+                `/app/get_service_point?id=${this.$route.params.id}`
             );
             if (response.status == 200) {
-                this.data1 = response.data;
-                // this.prevData = response.data
+                console.log(response.data.service);
+                this.parentName = response.data.service.title;
+
+                this.data1 = response.data.servicePoint;
                 this.newList();
-                // this.data1=response.data.data;
-                // this.pagination=response.data;
             } else this.e("Oops!", "Something went wrong, please try again!");
             this.loading = false;
         },

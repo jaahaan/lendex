@@ -133,7 +133,6 @@ export default {
                 this.formValue
             );
             if (res.status === 200 || res.status == 201) {
-                this.loading = false;
                 this.ss("Added successfully!");
                 this.$router.push("/experience");
             } else if (this.status == 422) {
@@ -141,9 +140,9 @@ export default {
                     this.e(response.data[x]);
                 }
             } else {
-                this.loading = false;
                 this.swr();
             }
+            this.loading = false;
         },
         clearErrorMessages() {
             this.errorMessages = {

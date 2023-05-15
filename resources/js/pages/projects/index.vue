@@ -37,6 +37,21 @@
                         :columns="columns1"
                         :data="data1"
                     >
+                        <template slot-scope="{ index }" slot="image">
+                            <div class="demo-upload-list">
+                                <img :src="`${http + data1[index].image}`" />
+                                <div class="demo-upload-list-cover">
+                                    <Icon
+                                        type="ios-eye-outline"
+                                        @click.native="
+                                            handleView(
+                                                `${http + data1[index].image}`
+                                            )
+                                        "
+                                    ></Icon>
+                                </div>
+                            </div>
+                        </template>
                         <template slot-scope="{ index }" slot="details">
                             <Button
                                 type="warning"
@@ -99,6 +114,9 @@
                 ></Table>
             </div>
         </Modal>
+        <Modal title="View Image" v-model="visible">
+            <img :src="modalImageUrl" v-if="visible" style="width: 100%" />
+        </Modal>
     </div>
 </template>
 
@@ -118,6 +136,11 @@ export default {
                 name: "",
             },
             columns1: [
+                {
+                    title: "Image",
+                    slot: "image",
+                    width: 110,
+                },
                 {
                     title: "Project Name",
                     key: "projectName",
@@ -239,10 +262,7 @@ export default {
                         name: "Clients",
                         value: "-----",
                     },
-                    {
-                        name: "Budget",
-                        value: "-----",
-                    },
+
                     {
                         name: "Duration",
                         value: "-----",
@@ -254,6 +274,9 @@ export default {
                 ],
             },
             data1: [],
+            modalImageUrl: "",
+            visible: false,
+            http: "http://127.0.0.1:8000/attachments/",
         };
     },
     computed: {
@@ -265,6 +288,14 @@ export default {
         },
     },
     methods: {
+        handleView(item) {
+            this.modalImageUrl = item;
+            this.visible = true;
+        },
+        handleView(item) {
+            this.modalImageUrl = item;
+            this.visible = true;
+        },
         showEdit(index) {
             this.$router.push(`/edit_project/${this.data1[index].id}`);
         },
@@ -326,12 +357,7 @@ export default {
             };
 
             this.detailsItem.data.push(ob);
-            ob = {
-                name: "Budget",
-                value: this.data1[index].budget,
-            };
 
-            this.detailsItem.data.push(ob);
             ob = {
                 name: "Duration",
                 value: this.data1[index].duration,

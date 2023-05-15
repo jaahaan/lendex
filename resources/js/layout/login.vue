@@ -151,12 +151,12 @@ export default {
                 this.formValue
             );
             if (response.status == 200) {
-                // var currentdate = new Date().toLocaleString().replace(',','')
-                // let authLifeSpan = {
-                //     id:Date.now(),
-                //     time:currentdate
-                // };
-                // this.$ls.set('authLifeSpan', JSON.stringify(authLifeSpan))
+                var currentdate = new Date().toLocaleString().replace(",", "");
+                let authLifeSpan = {
+                    id: Date.now(),
+                    time: currentdate,
+                };
+                this.$ls.set("authLifeSpan", JSON.stringify(authLifeSpan));
 
                 window.location = "/";
             } else if (response.status == 422) {

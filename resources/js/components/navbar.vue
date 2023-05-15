@@ -10,12 +10,12 @@
             </li>
 
             <li class="header_left_connt_user">
-                <div>
-                    <Dropdown style="margin-left: 20px">
+                <div style="margin-left: 20px; cursor: pointer">
+                    <Dropdown>
                         <Icon class="user_icon" type="md-person" />
                         <DropdownMenu slot="list">
                             <DropdownItem
-                                ><router-link to="/my_account"
+                                ><router-link to="/my_details"
                                     >Account</router-link
                                 ></DropdownItem
                             >
@@ -31,94 +31,6 @@
                 </div>
             </li>
         </ul>
-
-        <Modal
-            v-model="searchObject.modal"
-            width="700"
-            :footer-hide="true"
-            :closable="false"
-        >
-            <div class="central-search">
-                <Form ref="formValue" inline>
-                    <Row :gutter="24">
-                        <Col span="18">
-                            <FormItem style="width: 100%">
-                                <Select
-                                    ref="centralSearch"
-                                    :placeholder="
-                                        searchObject.type == 'Products'
-                                            ? 'Search Products...'
-                                            : 'Search Pages...'
-                                    "
-                                    v-model="searchObject.value"
-                                    filterable
-                                    clearable
-                                    :remote-method="getSearchData"
-                                    @on-clear="clearSearch"
-                                    @on-change="onSearchChange"
-                                >
-                                    <template
-                                        v-if="searchObject.type == 'Products'"
-                                    >
-                                        <Option
-                                            v-for="(
-                                                item, i
-                                            ) in searchObject.data"
-                                            :value="item.id"
-                                            :key="i"
-                                        >
-                                            <div>
-                                                <Row :gutter="24">
-                                                    <Col span="24"
-                                                        >{{ item.productName }}
-                                                        {{ item.model }}</Col
-                                                    >
-                                                    <Col span="12">{{
-                                                        item.variation
-                                                            | variationFormat
-                                                    }}</Col>
-                                                    <Col span="12"
-                                                        >Stock:{{
-                                                            item.stock
-                                                        }}</Col
-                                                    >
-                                                </Row>
-                                                <Divider />
-                                            </div>
-                                        </Option>
-                                    </template>
-                                    <template
-                                        v-else-if="
-                                            searchObject.type != 'Products'
-                                        "
-                                    >
-                                        <Option
-                                            v-for="(
-                                                item, i
-                                            ) in searchObject.data"
-                                            :value="item.id"
-                                            :key="i"
-                                            >{{ item.title }}</Option
-                                        >
-                                    </template>
-                                </Select>
-                            </FormItem>
-                        </Col>
-                        <Col span="6">
-                            <FormItem style="width: 100%">
-                                <Select
-                                    v-model="searchObject.type"
-                                    @on-change="clearSearch"
-                                >
-                                    <Option value="Products">Products</Option>
-                                    <Option value="Pages">Pages</Option>
-                                </Select>
-                            </FormItem>
-                        </Col>
-                    </Row>
-                </Form>
-            </div>
-        </Modal>
     </div>
 </template>
 
@@ -129,28 +41,8 @@ export default {
         return {
             date: "",
             time: "",
-
-            isSearching: false,
-            totalNotification: 0,
-            isNotificationMenu: false,
-
-            searchObject: {
-                value: "",
-                type: "Pages",
-                modal: false,
-                data: [],
-            },
-            notiDetails: [],
         };
     },
-    computed: {
-        ...mapGetters({
-            allNotiFalg: "allNotiFalg",
-            oneNotiFalg: "oneNotiFalg",
-            newOrdersCount: "newOrdersCount",
-        }),
-    },
-    z,
 };
 </script>
 

@@ -217,7 +217,7 @@ export default new Router({
         },
 
         {
-            path: "/service_point",
+            path: "/service_point/:id",
             name: "service_point",
             component: service_point,
             meta: {

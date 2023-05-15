@@ -12,11 +12,17 @@
         <div class="common-page-card">
             <Form>
                 <Row :gutter="24">
-                    <Col span="12">
+                    <Col :xs="24" :sm="24" :md="12" :lg="12">
                         <h4>Image</h4>
                         <div class="demo-upload-list" v-if="formValue.image">
                             <img :src="`${http + formValue.image}`" />
                             <div class="demo-upload-list-cover">
+                                <Icon
+                                    type="ios-eye-outline"
+                                    @click.native="
+                                        handleView(`${http + formValue.image}`)
+                                    "
+                                ></Icon>
                                 <Icon
                                     type="ios-trash-outline"
                                     @click.native="handleRemoveImage"
@@ -35,6 +41,7 @@
                                 :on-format-error="handleFormatError"
                                 :on-exceeded-size="handleMaxSize"
                                 action="/app/upload"
+                                class="upload"
                             >
                                 <div class="camera-icon">
                                     <Icon type="ios-camera" size="20"></Icon>
@@ -43,7 +50,7 @@
                             </Upload>
                         </div>
                     </Col>
-                    <Col span="12">
+                    <Col :xs="24" :sm="24" :md="12" :lg="12">
                         <h4>Hover Image</h4>
                         <div
                             class="demo-upload-list"
@@ -51,6 +58,14 @@
                         >
                             <img :src="`${http + formValue.hover_image}`" />
                             <div class="demo-upload-list-cover">
+                                <Icon
+                                    type="ios-eye-outline"
+                                    @click.native="
+                                        handleView(
+                                            `${http + formValue.hover_image}`
+                                        )
+                                    "
+                                ></Icon>
                                 <Icon
                                     type="ios-trash-outline"
                                     @click.native="handleRemovehover_image"
@@ -72,6 +87,7 @@
                                 :on-format-error="handleFormatError"
                                 :on-exceeded-size="handleMaxSize"
                                 action="/app/upload"
+                                class="upload"
                             >
                                 <div class="camera-icon">
                                     <Icon type="ios-camera" size="20"></Icon>
@@ -83,13 +99,23 @@
                     <Col span="24">
                         <Button
                             type="primary"
-                            @click="$router.push('/trusted_company')"
+                            :loading="loading"
+                            @click="save"
+                            style="margin-right: 10px"
+                        >
+                            <span v-if="!loading">Add</span>
+                            <span v-else>Please wait...</span>
+                        </Button>
+                        <Button @click="$router.push('/trusted_company')"
                             >Cancel</Button
-                        ><Button type="primary" @click="save">Save</Button>
+                        >
                     </Col>
                 </Row>
             </Form>
         </div>
+        <Modal title="View Image" v-model="visible">
+            <img :src="modalImageUrl" v-if="visible" style="width: 100%" />
+        </Modal>
     </div>
 </template>
 
@@ -105,9 +131,15 @@ export default {
             },
 
             http: "http://127.0.0.1:8000/attachments/",
+            modalImageUrl: "",
+            visible: false,
         };
     },
     methods: {
+        handleView(item) {
+            this.modalImageUrl = item;
+            this.visible = true;
+        },
         handleSuccessImage(res, file) {
             res = `${res}`;
             this.formValue.image = res;
@@ -169,7 +201,6 @@ export default {
             );
 
             if (res.status === 201) {
-                this.loading = false;
                 this.ss("Added successfully!");
                 this.$router.push("/trusted_company");
             } else if (res.status === 422) {
@@ -177,9 +208,9 @@ export default {
                     this.e(res.data[x]);
                 }
             } else {
-                this.loading = false;
                 this.swr();
             }
+            this.loading = false;
         },
     },
 
