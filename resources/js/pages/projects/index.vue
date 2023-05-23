@@ -143,7 +143,7 @@ export default {
                 },
                 {
                     title: "Project Name",
-                    key: "projectName",
+                    key: "project_name",
                     width: 110,
                 },
                 {
@@ -292,10 +292,6 @@ export default {
             this.modalImageUrl = item;
             this.visible = true;
         },
-        handleView(item) {
-            this.modalImageUrl = item;
-            this.visible = true;
-        },
         showEdit(index) {
             this.$router.push(`/edit_project/${this.data1[index].id}`);
         },
@@ -304,7 +300,7 @@ export default {
             this.detailsItem.title = this.data1[index].type;
             let ob = {
                 name: "Project Name",
-                value: this.data1[index].projectName,
+                value: this.data1[index].project_name,
             };
             this.detailsItem.data.push(ob);
             ob = {
@@ -374,7 +370,7 @@ export default {
             this.viewModal = true;
         },
         showRemove(index) {
-            this.UpdateValue.name = this.data1[index].projectName;
+            this.UpdateValue.name = this.data1[index].project_name;
             this.UpdateValue.id = this.data1[index].id;
             this.UpdateValue.indexNumber = index;
             this.deleteModal = true;

@@ -19,7 +19,7 @@ class CreateProjectsTable extends Migration
             $table->string('title');
             $table->string('subtitle');
             $table->text('description')->nullable();
-            $table->string('projectName');
+            $table->string('project_name');
             $table->string('clients')->nullable();
             $table->string('budget')->nullable();
             $table->string('duration')->nullable();

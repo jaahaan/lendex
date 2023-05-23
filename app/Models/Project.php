@@ -13,7 +13,7 @@ class Project extends Model
         'title',
         'subtitle',
         'description',
-        'projectName',
+        'project_name',
         'clients',
         'budget',
         'duration',

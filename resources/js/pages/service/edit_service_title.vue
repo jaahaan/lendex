@@ -78,19 +78,6 @@ export default {
         };
     },
     methods: {
-        async getRoutersAfterUpdate() {
-            this.loading = true;
-            const response = await this.callApi(
-                "get",
-                `/app/router/autorized/sidebar`
-            );
-            if (response.status == 200) {
-                // this.data1=response.data;
-                this.$store.commit("setSideBar", response.data);
-                // this.newList();
-            } else this.e("Oops!", "Something went wrong, please try again!");
-            this.loading = false;
-        },
         async update() {
             let validation = true;
 

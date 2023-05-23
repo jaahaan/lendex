@@ -39,13 +39,13 @@
                     <Col span="12">
                         <FormItem
                             label="Project Name"
-                            :error="errorMessages.projectName"
+                            :error="errorMessages.project_name"
                             :required="true"
                         >
                             <Input
                                 type="text"
                                 placeholder="Project Name"
-                                v-model="formValue.projectName"
+                                v-model="formValue.project_name"
                             ></Input>
                         </FormItem>
                     </Col>
@@ -164,7 +164,7 @@ export default {
                 title: "",
                 subtitle: "",
                 description: "",
-                projectName: "",
+                project_name: "",
                 clients: "",
                 duration: "",
                 date: "",
@@ -172,7 +172,7 @@ export default {
             errorMessages: {
                 title: "",
                 subtitle: "",
-                projectName: "",
+                project_name: "",
             },
             editorOption: {},
             http: "http://127.0.0.1:8000/attachments/",
@@ -239,8 +239,8 @@ export default {
                 this.errorMessages.subtitle = "Subtitle is required!";
                 validation = false;
             }
-            if (this.formValue.projectName.trim() == "") {
-                this.errorMessages.projectName = "Project Name is required!";
+            if (this.formValue.project_name.trim() == "") {
+                this.errorMessages.project_name = "Project Name is required!";
                 validation = false;
             }
             if (validation == false)

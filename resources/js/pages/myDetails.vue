@@ -246,7 +246,7 @@
                             @click="save"
                             style="margin-right: 10px"
                         >
-                            <span v-if="!loading">Add</span>
+                            <span v-if="!loading">Update</span>
                             <span v-else>Please wait...</span>
                         </Button>
                         <Button @click="isEdit = false">Cancel</Button>

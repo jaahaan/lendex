@@ -15,7 +15,7 @@
                     <Col span="12">
                         <FormItem label="Happy Clients">
                             <Input
-                                v-model="formValue.happyClients"
+                                v-model="formValue.happy_clients"
                                 type="text"
                             ></Input>
                         </FormItem>
@@ -23,7 +23,7 @@
                     <Col span="12">
                         <FormItem label="Project Complete">
                             <Input
-                                v-model="formValue.projectComplete"
+                                v-model="formValue.project_complete"
                                 type="text"
                             ></Input>
                         </FormItem>
@@ -32,7 +32,7 @@
                     <Col span="12">
                         <FormItem label="Years of Experience">
                             <Input
-                                v-model="formValue.yearsOfExperience"
+                                v-model="formValue.years_of_experience"
                                 type="text"
                             ></Input>
                         </FormItem>
@@ -66,9 +66,9 @@ export default {
             sending: false,
             formValue: {
                 id: 0,
-                happyClients: "",
-                projectComplete: "",
-                yearsOfExperience: "",
+                happy_clients: "",
+                project_complete: "",
+                years_of_experience: "",
             },
         };
     },

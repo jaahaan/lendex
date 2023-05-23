@@ -15,9 +15,9 @@ class CreateStatisticsCountsTable extends Migration
     {
         Schema::create('statistics_counts', function (Blueprint $table) {
             $table->id();
-            $table->string('happyClients')->nullable();
-            $table->string('projectComplete')->nullable();
-            $table->string('yearsOfExperience')->nullable();
+            $table->string('happy_clients')->nullable();
+            $table->string('project_complete')->nullable();
+            $table->string('years_of_experience')->nullable();
             $table->timestamps();
         });
     }

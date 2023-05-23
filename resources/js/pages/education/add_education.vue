@@ -29,12 +29,6 @@
                         placeholder="Ex: Bachelor's"
                     ></Input>
                 </FormItem>
-                <FormItem label="Field of study">
-                    <Input
-                        v-model="formValue.fieldOfStudy"
-                        placeholder="Field of study"
-                    ></Input>
-                </FormItem>
 
                 <div class="row">
                     <div class="col-6">

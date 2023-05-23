@@ -9,8 +9,8 @@ class StatisticsCount extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'happyClients',
-        'projectComplete',
-        'yearsOfExperience',
+        'happy_clients',
+        'project_complete',
+        'years_of_experience',
     ];
 }

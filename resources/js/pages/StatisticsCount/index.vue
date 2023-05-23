@@ -86,18 +86,18 @@ export default {
             columns1: [
                 {
                     title: "Happy Clients",
-                    key: "happyClients",
+                    key: "happy_clients",
                     minWidth: 150,
                 },
                 {
                     title: "Project Complete",
-                    key: "projectComplete",
+                    key: "project_complete",
                     minWidth: 150,
                 },
 
                 {
                     title: "Years of Experience",
-                    key: "yearsOfExperience",
+                    key: "years_of_experience",
                     minWidth: 150,
                 },
             ],
@@ -115,7 +115,9 @@ export default {
     },
     methods: {
         showEdit(index) {
-            this.$router.push(`/update_StatisticsCount/${this.data1[index].id}`);
+            this.$router.push(
+                `/update_StatisticsCount/${this.data1[index].id}`
+            );
         },
         showRemove(index) {
             this.UpdateValue.name = this.data1[index].company;

@@ -14,7 +14,7 @@ class ProjectController extends Controller
         $Project =  Project::select();
         if($search){
             $Project->where(function($query) use ($search){
-                $query->where('title','LIKE',"%$search%")->orwhere('subtitle','LIKE',"%$search%")->orwhere('projectName','LIKE',"%$search%");
+                $query->where('title','LIKE',"%$search%")->orwhere('subtitle','LIKE',"%$search%")->orwhere('project_name','LIKE',"%$search%");
             });
         }
         
@@ -25,7 +25,7 @@ class ProjectController extends Controller
             'image' => 'required',
             'title' =>'required',
             'subtitle' =>'required',
-            'projectName' =>'required',
+            'project_name' =>'required',
 
         ]);
         if($validator->fails()){
@@ -44,7 +44,7 @@ class ProjectController extends Controller
         $validator = Validator::make($request->all(),[
             'title' =>'required',
             'subtitle' =>'required',
-            'projectName' =>'required',
+            'project_name' =>'required',
         ]);
         if($validator->fails()){
             return response()->json($validator->errors(), 422);

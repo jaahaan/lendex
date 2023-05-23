@@ -104,11 +104,7 @@ export default {
                     key: "degree",
                     minWidth: 150,
                 },
-                {
-                    title: "Field Of Study",
-                    key: "fieldOfStudy",
-                    minWidth: 150,
-                },
+
                 {
                     title: "Start Date",
                     key: "start_date",
